@@ -5,8 +5,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include "structures.h"
 
 #define MAXBUF 1024
+
+int lecture(char *cheminFichierCode, instruction memoire);
 
 int main(int argc, char *argv[])
 {
