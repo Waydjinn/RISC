@@ -63,12 +63,12 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 	}
 	while(res != 0)
 	{
-		tempCode = '1';
-		while(tempCode != ' ' && res != 0) //On recopie la ligne caractère par caracère
+		tempCode = '1'; //Initialisation de la variable pour éviter que la variable reste au dernier caractère lu
+		while(tempCode != ' ' && res != 0) 
 		{
-			res = read(fs, &tempCode, 1);
-			opcode[k] = tempCode;
-			k++;
+			res = read(fs, &tempCode, 1); //On recopie la ligne caractère par caracère
+			opcode[k] = tempCode; //On stock le caractère lu dans un tableau de char
+			k++; //Suivant du char*
 		}
 		tempParam = '1';
 		while(tempParam != '\n' && res != 0)
@@ -77,8 +77,8 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 			oprande[l] = tempParam;
 			l++;
 		}
-		k = 0;
-		l = 0;
+		k = 0; 
+		l = 0; 
 		printf("opcode : %s \n", opcode);
 		printf("oprande : %s \n", oprande);
 	}
