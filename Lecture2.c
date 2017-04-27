@@ -113,7 +113,7 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 		k = 0; 
 		l = 0;
 		printf("Début instruction\n");
-		for (i = 0; i <= 4; i++){
+		for (i = 0; i <= 4; i++){ //Problème core dump quand on accès à i = 5 ...
 			printf("case : %d, %s \n", i,  tempInstr[i][1]);
 		}
 		printf("Fin instruction\n");
