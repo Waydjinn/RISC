@@ -7,7 +7,7 @@
 #include <string.h>
 #include "structures.h"
 
-#define MAXBUF 15
+#define MAXBUF 5
 instruction *code;
 
 //Prototypes des fonctions
@@ -61,16 +61,18 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 	 *      tempInstr[4] = res
 	 *      tempInstr[5] = jump
 	 */
-	 int i, j;
-	 for(i = 0; i <= 6; i++){
+	int i, j;
+	for(i = 0; i <= 6; i++){
 		tempInstr[i][1] = "Nil";
-	 }
+	}
 	fs = open(cheminFichierCode, O_RDONLY);
 	if(fs == -1)
 	{
 		printf("Le fichier est introuvable\n");
 		return 0;
 	}
+	
+	//Lecture OPCODE
 	while(res != 0)
 	{
 		tempCode = '1'; //Initialisation de la variable pour éviter que la variable reste au dernier caractère lu
@@ -88,15 +90,17 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 		tempInstr[j][1] = opcode;
 		j++;
 		tempParam = '1';
+		
+		//Lecture OPRANDE
 		while(tempParam != '\n' && res != 0)
 		{
-			printf("tempParam = %c\n", tempParam);
 				res = read(fs, &tempParam, 1);
 				if(tempParam != ' '){	
 					oprande[l] = tempParam;
 					l++;
 				}else{
 					printf("On met oprande : %s dans tmp[%d][1] \n", oprande, j);
+					printf("Test 1\n");
 					tempInstr[j][1] = oprande;
 					j++;
 					for(l=0; l<= i; l++)
@@ -107,9 +111,9 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 				}
 		}
 		printf("On met oprande : %s dans tmp[%d][1] \n", oprande, j);
+		printf("Test 2\n");
 		tempInstr[j][1] = oprande;
 		j++;
-		
 		k = 0; 
 		l = 0;
 		printf("Début instruction\n");
@@ -118,7 +122,7 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 		}
 		printf("Fin instruction\n");
 	}
-	
+		
 	close(fs);
     return 1;
 }
