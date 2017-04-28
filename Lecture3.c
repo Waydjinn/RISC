@@ -50,12 +50,18 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 	int i = 0;
 	int j = 0;
 	char tmp[MAXBUF];
-	char *tempInstr[7][1];
+	char *tempInstr[5][1];
+	fichier = fopen(cheminFichierCode, "r");
 	
-	fichier = fopen(cheminFichierCode, "r+");
+	/*
+	for( i = 0; i <= 5; i++){
+		tempInstr[i][1] = "0";
+	}*/
 	
 	if(fichier != NULL){
+		printf("FAIRE POUR CHAQUE LIGNES DU FICHIER\n");
 		while(caract != EOF){
+			
 			caract = fgetc(fichier);
 			if(caract == ' ' || caract == '\n'){
 				printf("ON INSERE : %s DANS TAB[%d][1]\n", tmp, j);
@@ -73,13 +79,8 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 			}
 		}
 		printf("ON LIT TAB[4][1] : %s \n", tempInstr[4][1]);
-		printf("ON LIT TAB[5][1] : %s \n", tempInstr[5][1]); // ???
-		/*
-		printf("Début instruction\n");
-		for (i = 0; i <= 5; i++){
-			printf("ON LIT TAB[%d][1] : %s \n", i,  tempInstr[i][1]);
-		}
-		printf("Fin instruction\n");*/		
+		//printf("ON LIT TAB[5][1] : %s \n", tempInstr[5][1]); // ???
+	
 		fclose(fichier);
 	}else{
 		printf("Impossible d'ouvrir le fichier\n");
