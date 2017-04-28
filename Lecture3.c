@@ -7,7 +7,7 @@
 #include <string.h>
 #include "structures.h"
 
-#define MAXBUF 1024
+#define MAXBUF 10
 instruction *code;
 
 //Prototypes des fonctions
@@ -44,43 +44,46 @@ int main(int argc, char *argv[])
  * Si une erreur est détecté on envoie un message d'erreur et on vide le
  * tableau memoire. 
  */
-int lecture(char *cheminFichierCode, instruction *memoire){
-	
+int lecture(char *cheminFichierCode, instruction *memoire){	
 	FILE *fichier = NULL;
 	int caract = 0;
 	int i = 0;
 	int j = 0;
 	char tmp[MAXBUF];
-	char *tempInstr[6][1];
+	char *tempInstr[7][1];
 	
 	fichier = fopen(cheminFichierCode, "r+");
 	
 	if(fichier != NULL){
 		while(caract != EOF){
 			caract = fgetc(fichier);
-			if(caract == ' '){
+			if(caract == ' ' || caract == '\n'){
+				printf("ON INSERE : %s DANS TAB[%d][1]\n", tmp, j);
 				tempInstr[j][1] = tmp;
+				printf("ON LIT TAB[%d][1] : %s \n", j,  tempInstr[j][1]);
 				j++;
 				printf("\n");
+				while(i != 0){
+					tmp[i] = ' ';
+					i--;
+				}
 			}else{
-				printf("%c", caract);
 				tmp[i] = caract;
 				i++;
 			}
-			
 		}
+		printf("ON LIT TAB[4][1] : %s \n", tempInstr[4][1]);
+		printf("ON LIT TAB[5][1] : %s \n", tempInstr[5][1]); // ???
+		/*
 		printf("Début instruction\n");
 		for (i = 0; i <= 5; i++){
-			printf("case : %d, %s \n", i,  tempInstr[i][1]);
+			printf("ON LIT TAB[%d][1] : %s \n", i,  tempInstr[i][1]);
 		}
-		printf("Fin instruction\n");
-		
-		
+		printf("Fin instruction\n");*/		
 		fclose(fichier);
 	}else{
 		printf("Impossible d'ouvrir le fichier\n");
 	}
-	
     return 1;
 }
 
