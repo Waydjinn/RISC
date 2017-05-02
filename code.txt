@@ -1,1 +1,4 @@
 ADD R1 R2 R1
+LW R1 A
+J -8
+SW R1 B

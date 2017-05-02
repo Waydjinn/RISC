@@ -1,4 +1,4 @@
-//variables globales 
+//variables globales
 
 instruction* Jeu_dinstruction;
 instruction* code;
