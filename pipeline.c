@@ -2,7 +2,7 @@
 
 int pipeline()
 {
-
+  
 return 0;
 }
 
