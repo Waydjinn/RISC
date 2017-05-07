@@ -1,9 +1,11 @@
-#ifndef _STRUCTURES_H
-#define _STRUCTURES_H
+//variables globales
 
+instruction* Jeu_dinstruction;
+instruction* code;
+Resultat* addr;
+int cycle;
 
-//#################Structures#################
-
+//---------------------------------------------------
 
 struct REGISTRE{
         int valeur;
@@ -14,28 +16,20 @@ typedef struct REGISTRE registre;
 //---------------------------------------------------
 
 struct RESULTAT{
-	int* valeur;
+	int valeur;
 	char* nom;
 	};
 typedef struct RESULTAT resultat;
+
 
 //---------------------------------------------------
 
 struct INSTRUCTION{
 	char* OPcode;
-	registre r1;
-	registre r2;
-	registre r3;
-	resultat res;
+	int r1;
+	int r2;
+	int r3;
+	char* res;
 	int jump;
 	};
 typedef struct INSTRUCTION instruction;
-
-//##################Globales#################
-
-extern instruction* Jeu_dinstruction;
-extern instruction* code;
-extern resultat* addr;
-extern  int cycle;
-
-#endif
