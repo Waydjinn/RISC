@@ -1,11 +1,9 @@
-//variables globales
+#ifndef _STRUCTURES_H
+#define _STRUCTURES_H
 
-instruction* Jeu_dinstruction;
-instruction* code;
-Resultat* addr;
-int cycle;
 
-//---------------------------------------------------
+//#################Structures#################
+
 
 struct REGISTRE{
         int valeur;
@@ -21,7 +19,6 @@ struct RESULTAT{
 	};
 typedef struct RESULTAT resultat;
 
-
 //---------------------------------------------------
 
 struct INSTRUCTION{
@@ -33,3 +30,12 @@ struct INSTRUCTION{
 	int jump;
 	};
 typedef struct INSTRUCTION instruction;
+
+//##################Globales#################
+
+extern instruction* Jeu_dinstruction;
+extern instruction* code;
+extern resultat* addr;
+extern  int cycle;
+
+#endif
