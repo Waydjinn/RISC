@@ -14,7 +14,7 @@ typedef struct REGISTRE registre;
 //---------------------------------------------------
 
 struct RESULTAT{
-	int* valeur;
+	int valeur;
 	char* nom;
 	};
 typedef struct RESULTAT resultat;
@@ -23,10 +23,10 @@ typedef struct RESULTAT resultat;
 
 struct INSTRUCTION{
 	char* OPcode;
-	registre r1;
-	registre r2;
-	registre r3;
-	resultat res;
+	int r1;
+	int r2;
+	int r3;
+	char* res;
 	int jump;
 	};
 typedef struct INSTRUCTION instruction;
