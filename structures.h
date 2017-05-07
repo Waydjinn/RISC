@@ -2,7 +2,7 @@
 #define _STRUCTURES_H
 
 
-#################Structures#################
+//#################Structures#################
 
 
 struct REGISTRE{
@@ -13,29 +13,29 @@ typedef struct REGISTRE registre;
 
 //---------------------------------------------------
 
-struct INSTRUCTION{
-	char* OPcode;
-	registre r1;
-	registre r2;
-	registre r3;
-	resultat res;
-	int jump;
-	};
-typedef struct INSTRUCTION instruction;
-
-//---------------------------------------------------
-
 struct RESULTAT{
-	int* valeur;
+	int valeur;
 	char* nom;
 	};
 typedef struct RESULTAT resultat;
 
-##################Globales#################
+//---------------------------------------------------
+
+struct INSTRUCTION{
+	char* OPcode;
+	int r1;
+	int r2;
+	int r3;
+	char* res;
+	int jump;
+	};
+typedef struct INSTRUCTION instruction;
+
+//##################Globales#################
 
 extern instruction* Jeu_dinstruction;
 extern instruction* code;
-extern Resultat* addr;
+extern resultat* addr;
 extern  int cycle;
 
 #endif
