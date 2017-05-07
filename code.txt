@@ -1,4 +1,4 @@
 ADD R1 R2 R1
 LW R1 A
-J -8
+BNEZ R8 -4
 SW R1 B

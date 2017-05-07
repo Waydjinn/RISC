@@ -19,7 +19,7 @@ registre R[NB_REG];
 	code[i]->r1 = reg1;
 	code[i]->r2 = reg2;
 	code[i]->r3 = reg3;
-	code[i]->res = new_res(res);
+	code[i]->res = res;
 	code[i]->jump = j;
  */
 
@@ -27,7 +27,26 @@ registre R[NB_REG];
 int lecture(char *cheminFichierCode, instruction *memoire);
 int stockage(char* ligne, int num_ligne);
 int verification(char* mot, int num_mot,int num_ligne);
-
+void affiche_test(int nombre_lignes)
+{
+	printf("affichage instructions : \n");
+	for(int i = 0;i< nombre_lignes;i++)
+	{
+		printf("#%d ",i);
+		printf("%s ",code[i].OPcode);
+		if(code[i].r1!= -1)
+			printf("R%d ",code[i].r1);
+		if(code[i].r2!= -1)
+			printf("R%d ",code[i].r2);
+		if(code[i].r3!= -1)
+			printf("R%d ",code[i].r3);
+		if(strcmp(code[i].res,"default")!= 0)
+			printf("%s ",code[i].res);
+		if(code[i].jump != 4)	
+			printf("%d ",code[i].jump);
+		printf("\n");
+	}
+}
 void init_chaine(char tmp[MAXBUF])
 {
 	int i;
@@ -53,7 +72,7 @@ instruction init_instr()
 	instr.r2 = -1;
 	instr.r3 = -1;
 	instr.res = "\0";
-	instr.jump = 1;
+	instr.jump = 4;
 	return instr;
 }
 //Main
@@ -103,10 +122,10 @@ int lecture(char *cheminFichierCode, instruction *memoire){
         i++;
       }
     //  ## operations pour separer la ligne ##
-      printf("ligne %d : \n%s \n",j,ligne);
+      //~ printf("ligne %d : \n%s \n",j,ligne);
      if(!stockage(ligne,j))
 		{
-			printf("Appelez les hendek \n");
+			//~ printf("Appelez les hendek \n");
 			return 0;
 		}
     //  ## on reinitialise pour passer a la ligne suivante##
@@ -115,7 +134,7 @@ int lecture(char *cheminFichierCode, instruction *memoire){
       j++;
     }
 		close(fichier);
-
+		affiche_test(j);
     return 1;
 }
 
@@ -130,7 +149,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 	init_chaine(cc);
 	if(num_mot == 0) // entree Opcode
 	{   
-		printf("debug opcode : %s \n",mot);
+		//~ printf("debug opcode : %s \n",mot);
 		if(strcmp(mot,"ADD")==0||strcmp(mot,"SUB")==0||strcmp(mot,"LW")==0||strcmp(mot,"SW")==0||strcmp(mot,"MULT")==0||strcmp(mot,"SLT")==0||strcmp(mot,"BNEZ")==0)
 		{
 			code[num_ligne].OPcode=malloc(MAXBUF);
@@ -142,19 +161,21 @@ int verification(char* mot, int num_mot,int num_ligne){
 	
 	if(num_mot > 0 && num_mot < 4)
 	{	// ADD, SUB, MULT et SLT
-		printf("debug %s l%d m%d \n",code[num_ligne].OPcode,num_ligne,num_mot);
+		//~ printf("debug %s l%d m%d \n",code[num_ligne].OPcode,num_ligne,num_mot);
 		if(strcmp(code[num_ligne].OPcode,"ADD")==0 || strcmp(code[num_ligne].OPcode,"SUB")==0 || strcmp(code[num_ligne].OPcode,"MULT")==0 || strcmp(code[num_ligne].OPcode,"SLT")==0)
 		{	//entree registres 
-			printf("debug mot : %s \n",mot);
-			printf("debug mot[3]:%c mot[0]:%c mot[1]:%c mot[2]:%c \n",mot[3],mot[0],mot[1],mot[2]);
-			if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1]) && isdigit(mot[2]) )
+			//~ printf("debug mot : %s \n",mot);
+			//~ printf("debug mot[3]:%c mot[0]:%c mot[1]:%c mot[2]:%c \n",mot[3],mot[0],mot[1],mot[2]);
+			if(mot[3] == '\0')	
+			  //~ printf("mot 3 == 0 \n");
+			if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1]) && (isdigit(mot[2]) || mot[2] == '\0'))
 			{
-				printf("debug %s l%d \n",code[num_ligne].OPcode,num_ligne);
 				cc[0] = mot[1]; 
 				cc[1]= mot[2];
 				tmp = atoi(cc);
 				if(tmp < NB_REG)
 				{
+					//~ printf("debug YOLOSWAG \n");
 					if(num_mot == 1)
 						code[num_ligne].r1 = tmp;
 					if(num_mot == 2)
@@ -169,11 +190,8 @@ int verification(char* mot, int num_mot,int num_ligne){
 		{
 			if(num_mot == 1) // registre 1
 			{
-				if(mot[3] == '\0')	
-					printf("mot 3 != 0 \n");
-				if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1])&& (isdigit(mot[2]) || mot[2] =='\0') )
+				if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1])&& (isdigit(mot[2]) || mot[2] =='\0'))
 				{
-					printf("debug YOLOSWAG \n");
 					cc[0] = mot[1]; 
 					cc[1]= mot[2];
 					tmp = atoi(cc);
@@ -194,7 +212,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 		{
 			if(num_mot == 1) // registre 1
 			{
-				if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1]) && isdigit(mot[2]) )
+				if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1]) && (isdigit(mot[2]) || mot[2] =='\0'))
 				{
 					cc[0] = mot[1]; 
 					cc[1]= mot[2];
@@ -215,6 +233,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 					{
 						if(!isdigit(mot[i]))
 							return 0;
+						i++;
 					}
 					tmp = atoi(mot);
 					if(tmp % 4 ==0)
@@ -252,7 +271,7 @@ int stockage(char* ligne, int num_ligne){
           k++;  i++;         // De lecture
         }
         // on met le mot dans le champ de la structure voulue
-        printf("tmp : %s \n",tmp);
+        //~ printf("tmp : %s \n",tmp);
 		if(!verification(tmp,num_mot,num_ligne))
 		{
 			printf("Code Seerk \n");
