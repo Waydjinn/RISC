@@ -4,3 +4,5 @@ MUL R1,R2,R1
 LW R1,@A
 BNEZ R8,-4
 SW @B,R1
+
+

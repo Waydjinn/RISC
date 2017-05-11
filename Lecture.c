@@ -35,13 +35,13 @@ void affiche_test(int nombre_lignes)
 		printf("#%d ",i);
 		printf("%s ",code[i].OPcode);
 		if(code[i].r1!= -1)
-			printf("R%d,",code[i].r1);
+			printf("R%d",code[i].r1);
 		if(code[i].r2!= -1)
-			printf("R%d,",code[i].r2);
+			printf(",R%d",code[i].r2);
 		if(code[i].r3!= -1)
-			printf("R%d,",code[i].r3);
+			printf(",R%d",code[i].r3);
 		if(strcmp(code[i].res,"default")!= 0)
-			printf("%s,",code[i].res);
+			printf("%s ",code[i].res);
 		if(code[i].jump != 4)	
 			printf("%d ",code[i].jump);
 		printf("\n");
@@ -149,8 +149,8 @@ int verification(char* mot, int num_mot,int num_ligne){
 	init_chaine(cc);
 	if(num_mot == 0) // entree Opcode
 	{   
-		//~ printf("debug opcode : %s \n",mot);
-		if(strcmp(mot,"ADD")==0||strcmp(mot,"SUB")==0||strcmp(mot,"LW")==0||strcmp(mot,"SW")==0||strcmp(mot,"MULT")==0||strcmp(mot,"SLT")==0||strcmp(mot,"BNEZ")==0)
+		printf("debug opcode : %s \n",mot);
+		if(strcmp(mot,"ADD")==0||strcmp(mot,"LW")==0||strcmp(mot,"SW")==0||strcmp(mot,"MUL")==0||strcmp(mot,"SLT")==0||strcmp(mot,"BNEZ")==0)
 		{
 			code[num_ligne].OPcode=malloc(MAXBUF);
 			strcpy(code[num_ligne].OPcode,mot);
