@@ -35,13 +35,13 @@ void affiche_test(int nombre_lignes)
 		printf("#%d ",i);
 		printf("%s ",code[i].OPcode);
 		if(code[i].r1!= -1)
-			printf("R%d ",code[i].r1);
+			printf("R%d,",code[i].r1);
 		if(code[i].r2!= -1)
-			printf("R%d ",code[i].r2);
+			printf("R%d,",code[i].r2);
 		if(code[i].r3!= -1)
-			printf("R%d ",code[i].r3);
+			printf("R%d,",code[i].r3);
 		if(strcmp(code[i].res,"default")!= 0)
-			printf("%s ",code[i].res);
+			printf("%s,",code[i].res);
 		if(code[i].jump != 4)	
 			printf("%d ",code[i].jump);
 		printf("\n");
@@ -125,7 +125,7 @@ int lecture(char *cheminFichierCode, instruction *memoire){
       //~ printf("ligne %d : \n%s \n",j,ligne);
      if(!stockage(ligne,j))
 		{
-			//~ printf("Appelez les hendek \n");
+			printf("Appelez les hendek \n");
 			return 0;
 		}
     //  ## on reinitialise pour passer a la ligne suivante##
@@ -160,9 +160,10 @@ int verification(char* mot, int num_mot,int num_ligne){
 	}
 	
 	if(num_mot > 0 && num_mot < 4)
-	{	// ADD, SUB, MULT et SLT
-		//~ printf("debug %s l%d m%d \n",code[num_ligne].OPcode,num_ligne,num_mot);
-		if(strcmp(code[num_ligne].OPcode,"ADD")==0 || strcmp(code[num_ligne].OPcode,"SUB")==0 || strcmp(code[num_ligne].OPcode,"MULT")==0 || strcmp(code[num_ligne].OPcode,"SLT")==0)
+	{	
+		printf("debug %s l%d m%d \n",code[num_ligne].OPcode,num_ligne,num_mot);
+		// ADD, SUB, MUL et SLT
+		if(strcmp(code[num_ligne].OPcode,"ADD")==0 ||strcmp(code[num_ligne].OPcode,"MUL")==0 || strcmp(code[num_ligne].OPcode,"SLT")==0)
 		{	//entree registres 
 			//~ printf("debug mot : %s \n",mot);
 			//~ printf("debug mot[3]:%c mot[0]:%c mot[1]:%c mot[2]:%c \n",mot[3],mot[0],mot[1],mot[2]);
@@ -185,8 +186,8 @@ int verification(char* mot, int num_mot,int num_ligne){
 					return 1;
 				}
 			}
-		} // LW et SW
-		if(strcmp(code[num_ligne].OPcode,"LW")==0 ||strcmp(code[num_ligne].OPcode,"SW")==0 )
+		} // LW 
+		if(strcmp(code[num_ligne].OPcode,"LW")==0)
 		{
 			if(num_mot == 1) // registre 1
 			{
@@ -204,9 +205,39 @@ int verification(char* mot, int num_mot,int num_ligne){
 			}
 			if(num_mot == 2) //addresse
 			{
-				code[num_ligne].res = mot;
-				return 1;
+				if(mot[0]=='@' && isalpha(mot[1]))
+				{
+					code[num_ligne].res = mot;
+					return 1;
+				}
 			}
+			
+		}
+		if(strcmp(code[num_ligne].OPcode,"SW")==0)
+		{
+			if(num_mot == 1) //addresse
+			{
+				if(mot[0]=='@' && isalpha(mot[1]))
+				{
+					code[num_ligne].res = mot;
+					return 1;
+				}
+			}
+			if(num_mot == 2) // registre 1
+			{
+				if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1])&& (isdigit(mot[2]) || mot[2] =='\0'))
+				{
+					cc[0] = mot[1]; 
+					cc[1]= mot[2];
+					tmp = atoi(cc);
+					if(tmp < NB_REG)
+					{
+						code[num_ligne].r1 = tmp;
+						return 1;
+					}
+				}
+			}
+			
 		} // BNEZ
 		if(strcmp(code[num_ligne].OPcode,"BNEZ")==0)
 		{
@@ -265,7 +296,7 @@ int stockage(char* ligne, int num_ligne){
       init_chaine(tmp);
       while(ligne[k]!='\0')//on s arrette en fin de ligne
       {
-        while(ligne[k] !=' ' && ligne[k]!= '\0') //double securitée
+        while(ligne[k] !=' ' && ligne[k] !=',' && ligne[k]!= '\0' ) //double securitée
         {
           tmp[i] = ligne[k]; // on stock dans un tmp les caracs du mot en cours
           k++;  i++;         // De lecture
