@@ -35,6 +35,6 @@ typedef struct INSTRUCTION instruction;
 
 extern instruction* code;
 extern resultat* addr;
-extern  int cycle;
+extern  int cycle[2];
 
 #endif

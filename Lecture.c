@@ -39,14 +39,25 @@ void affiche_inst(int nombre_lignes)
 		if(strcmp(code[i].OPcode,"ADD")==0 ||strcmp(code[i].OPcode,"MUL")==0||strcmp(code[i].OPcode,"SLT")==0)
 			printf("R%d,R%d,R%d ",code[i].r1,code[i].r2,code[i].r3);
 		if(strcmp(code[i].OPcode,"LW")==0)
-			printf("R%d,@%s ",code[i].r1,code[i].res.nom);
+			printf("R%d,@%s[%d] ",code[i].r1,code[i].res.nom,code[i].r2);
 		if(strcmp(code[i].OPcode,"SW")==0)
-			printf("@%s,R%d ",code[i].res.nom,code[i].r1);
+			printf("@%s[R%d],R%d ",code[i].res.nom,code[i].r2,code[i].r1);
 		if(strcmp(code[i].OPcode,"BNEZ")==0)
 			printf("R%d,%d",code[i].r1,code[i].jump);
 		printf("\n");
 	}
 }
+
+int research(char* chaine,char c)
+{
+	for(int i =0;i<=strlen(chaine);i++)
+	{
+		if(chaine[i] == c)
+			return i;
+	}
+	return -1;
+}
+
 void init_chaine(char tmp[MAXBUF])
 {
 	int i;
@@ -241,7 +252,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 	
 	if(num_mot > 0 && num_mot < 4)
 	{	
-		// ADD, SUB, MUL et SLT
+		// ADD, MUL et SLT
 		if(strcmp(code[num_ligne].OPcode,"ADD")==0 ||strcmp(code[num_ligne].OPcode,"MUL")==0 || strcmp(code[num_ligne].OPcode,"SLT")==0)
 		{	//entree registres 
 			if(mot[3] == '\0' && mot[0] == 'R' && isdigit(mot[1]) && (isdigit(mot[2]) || mot[2] == '\0'))
@@ -249,7 +260,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 				cc[0] = mot[1]; 
 				cc[1]= mot[2];
 				tmp = atoi(cc);
-				if(tmp < NB_REG)
+				if(tmp <= NB_REG)
 				{
 					if(num_mot == 1)
 						code[num_ligne].r1 = tmp;
@@ -270,7 +281,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 					cc[0] = mot[1]; 
 					cc[1]= mot[2];
 					tmp = atoi(cc);
-					if(tmp < NB_REG)
+					if(tmp <= NB_REG)
 					{
 						code[num_ligne].r1 = tmp;
 						return 1;
@@ -283,8 +294,26 @@ int verification(char* mot, int num_mot,int num_ligne){
 				{
 					for(int i=0;i<strlen(mot);i++)
 						mot[i] = mot[i+1];
+					int pos1 = research(mot,'[');
+					int pos2 = research(mot,']');
+					int dist = pos2 - pos1;
+					if((pos1 == -1 || pos2 ==-1 || dist < 3 || dist > 4))
+						return 0;	
+					if(mot[pos1+1] !=  'R' || mot[pos2+1] != '\0')
+						return 0;
+					for(int h=2;h<dist;h++)
+					{
+						if(!isdigit(mot[pos1+h]))
+							return 0;
+						cc[h-2] = mot[pos1+h];
+					}
+					tmp = atoi(cc);
+					if(tmp>=NB_REG)
+						return 0;
+					code[num_ligne].r2 = tmp;
+					for(i = pos2;i>=pos1;i--)
+						mot[i] = '\0';
 					int adr = 0;
-					printf(" mot : %s",mot);
 					adr = cherche_res(mot);
 					if(adr == -1)
 						return 0;
@@ -302,6 +331,25 @@ int verification(char* mot, int num_mot,int num_ligne){
 				{
 					for(int i=0;i<strlen(mot);i++)
 						mot[i] = mot[i+1];
+					int pos1 = research(mot,'[');
+					int pos2 = research(mot,']');
+					int dist = pos2 - pos1;
+					if((pos1 == -1 || pos2 ==-1 || dist < 3 || dist > 4))
+						return 0;	
+					if(mot[pos1+1] !=  'R' || mot[pos2+1] != '\0')
+						return 0;
+					for(int h=2;h<dist;h++)
+					{
+						if(!isdigit(mot[pos1+h]))
+							return 0;
+						cc[h-2] = mot[pos1+h];
+					}
+					tmp = atoi(cc);
+					if(tmp>=NB_REG)
+						return 0;
+					code[num_ligne].r2 = tmp;
+					for(i = pos2;i>=pos1;i--)
+						mot[i] = '\0';
 					int adr = 0;
 					adr = cherche_res(mot);
 					if(adr == -1)
@@ -317,7 +365,7 @@ int verification(char* mot, int num_mot,int num_ligne){
 					cc[0] = mot[1]; 
 					cc[1]= mot[2];
 					tmp = atoi(cc);
-					if(tmp < NB_REG)
+					if(tmp <= NB_REG)
 					{
 						code[num_ligne].r1 = tmp;
 						return 1;

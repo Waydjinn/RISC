@@ -3,7 +3,7 @@
 
 instruction* code;
 Resultat* addr;
-int cycle;
+int cycle[2];
 
 //---------------------------------------------------
 
