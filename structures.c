@@ -1,6 +1,6 @@
+
 //variables globales
 
-instruction* Jeu_dinstruction;
 instruction* code;
 Resultat* addr;
 int cycle;
@@ -16,7 +16,7 @@ typedef struct REGISTRE registre;
 //---------------------------------------------------
 
 struct RESULTAT{
-	int valeur;
+	int* valeur;
 	char* nom;
 	};
 typedef struct RESULTAT resultat;
@@ -29,7 +29,7 @@ struct INSTRUCTION{
 	int r1;
 	int r2;
 	int r3;
-	char* res;
+	resultat res;
 	int jump;
 	};
 typedef struct INSTRUCTION instruction;

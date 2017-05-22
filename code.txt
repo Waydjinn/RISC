@@ -1,8 +1,10 @@
+@x = 1000
+@y = 3
+@z = 500
+
 ADD R1,R2,R1
 SLT R1,R2,R1
 MUL R1,R2,R1
-LW R1,@A
+LW R1,@x[R0]
 BNEZ R8,-4
-SW @B,R1
-
-
+SW @z[R12],R1
