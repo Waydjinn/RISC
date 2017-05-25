@@ -4,6 +4,7 @@
 
 //#################Structures#################
 
+#define NB_REG 32
 
 struct REGISTRE{
         int valeur;
@@ -36,5 +37,10 @@ typedef struct INSTRUCTION instruction;
 extern instruction* code;
 extern resultat* addr;
 extern  int cycle[2];
+
+//constructeurs
+instruction init_instr();
+resultat init_resultat();
+
 
 #endif
