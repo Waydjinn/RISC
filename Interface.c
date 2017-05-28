@@ -87,7 +87,6 @@ void Mode_sequentiel()
 		Sequentiel(code);
 		resultats=calloc(100000,sizeof(char)); //On alloue de la memoire pour l affichage du resultat
 		sprintf(resultats,"Resultat du mode séquentiel : \n\n votre programme s'est éxécuté en %d cycles \n\n",cycle[0]); //On convertit le nb de cycle en type chaine pour pouvoir l'afficher.
-		
 		resultats=affiche_res_addr(resultats);
 		gtk_text_buffer_set_text(ResBuff,resultats,-1);
 		free(resultats);
@@ -236,7 +235,6 @@ void sauvegarde_res(GtkButton *SaveButton,gpointer data)
 			float acc = (float)cycle[0]/(float)cycle[1];
 			fprintf(fichier,"Résultat de l'analyse en mode comparaison : \n Execution séquentiel : %d cycles \n Execution pipeline : %d cycle \n Rapport sequentiel/pipeline : %f ",cycle[0],cycle[1],acc);
 			fprintf(fichier,"\n\n Résultats : \n\n %s",res);
-			printf("\n\n Résultats : \n\n %s",res);
 			fclose(fichier);
 			free(res);
 			gtk_text_buffer_set_text(ResBuff,"Sauvegarde réussie.",-1);
