@@ -138,8 +138,8 @@ int lecture(char *cheminFichierCode, instruction *memoire){
 		code[j] = init_instr(); //opcode de fin
 		code[j].OPcode = "END"; 
 		close(fichier);
-		affiche_res(nbadr);
-		affiche_inst(j);
+		//affiche_res(nbadr);
+		//affiche_inst(j);
     return 1;
 }
 
