@@ -172,11 +172,11 @@ int finition(int tab[5][5])
 	int i,cpt =0;
 	int exec[5];
 	init_mutex(exec);
-	printf("finition start \n");
+	//printf("finition start \n");
 	while ( tab[0][1] != -1 || tab[1][1] != -1 || tab[2][1] != -1 || tab[3][1] != -1 || tab[4][1] != -1 )
 	{
 		//affiche_Pipeline(tab);
-		printf("finition cycle + = %d \n",cpt);
+		//printf("finition cycle + = %d \n",cpt);
 		for (i=0;i<5;i++)
 				{
 					
@@ -239,13 +239,13 @@ int pipeline(instruction * code, int cp)
 	//initialisation des tableaux de bool
     init_mutex(mutex);
     init_mutex(exec);
-    printf("le cp est egale a %d\n",cp);
+   // printf("le cp est egale a %d\n",cp);
     while (strcmp(code[cp].OPcode, "END") != 0) //END représente la fin du code
     {
         if(strcmp(code[cp].OPcode, "BNEZ") != 0)//BNEZ est un cas spéciale a traiter
         {
 			//affiche_Pipeline(pipeTab); 
-			printf("Instruction %d\n", cp);
+			//printf("Instruction %d\n", cp);
 			for (i=0;i<5;i++)
 				{
 					if(pipeTab[i][1] == -1 && bool ==1 )//on regarde si on peut charger une instruction dans le pipeline 
@@ -289,10 +289,10 @@ int pipeline(instruction * code, int cp)
            }
 				else 
            {
-				printf(" Appel BNEZ PRE FINITION \n");  // Lors de l'appel du BNEZ on stop les chargements 
+				//printf(" Appel BNEZ PRE FINITION \n");  // Lors de l'appel du BNEZ on stop les chargements 
                 cycle[1] =cycle[1]+finition(pipeTab)+4; // on execute les instructions au dessus du BNEZ en ajoutant le temps d'execution du BNEZ
                 cp += BNEZ(&tabreg[code[cp].r1],code[cp].jump); 
-                printf(" Appel BNEZ POST FINITION \n");
+                //printf(" Appel BNEZ POST FINITION \n");
                 return pipeline(code,cp); // On réappel un pipeline avec le nouveau CP
            }        
        }
