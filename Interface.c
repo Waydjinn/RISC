@@ -18,7 +18,7 @@ char* affiche_res_addr(char *res)
 		j=0;
 		while(addr[i].valeur[j]!=-1)
 		{
-			char* resultats=malloc(10000*sizeof(char)); //On alloue une taille de 100 char pour l affichage du resultat
+			char* resultats=malloc(100000*sizeof(char)); //On alloue une taille de 100 char pour l affichage du resultat
 			if(j%5==0)
 			{
 				sprintf(resultats,"\n %s[%d]=%d",addr[i].nom,j,addr[i].valeur[j]);
@@ -225,7 +225,7 @@ void sauvegarde_res(GtkButton *SaveButton,gpointer data)
  
     fichier = fopen(path_res, "w");
 		
-	char *res=calloc(10000,sizeof(char));
+	char *res=calloc(100000,sizeof(char));
 	res=affiche_res_addr(res);
 	
     if (fichier != NULL)
