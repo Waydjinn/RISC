@@ -5,6 +5,9 @@ resultat* addr;
 int cycle[2];
 registre tabreg[NB_REG];
 
+/* La fonction permet de retrouver les résultats des variables du code à émuler
+ * et les concaténe avec le résultat des cycles. 
+ */
 char* affiche_res_addr(char *res)
 {
 	int i,j;
@@ -32,7 +35,11 @@ char* affiche_res_addr(char *res)
 	}
 	return res;
 }
-
+/* Trouve le chemin du fichier à sauvegarder en prenant en compte le choix User.
+ * La fonction va concaténer le chemin du fichier à émuler (sans le nom du fichier) 
+ * avec le nom de sauvegarde que l'utilisateur aura renseigné. On ajoute aussi l'extension
+ *  .txt.
+ */
 char* Nom_fichier_sauvegarde(const char *path,const char *nomsauvegarde,char *newpath)//trouve le chemin du fichier a sauvegarder en prenant en compte le choix User
 {
 	int res=0;
@@ -49,6 +56,9 @@ char* Nom_fichier_sauvegarde(const char *path,const char *nomsauvegarde,char *ne
 	return newpath=strcat(newpath,".txt");
 }
 
+/* La fonction permet l'éxecution du mode séquentiel ainsi que d'afficher les résultats.
+ * 
+ */ 
 void Mode_sequentiel()
 {
 	if(addr!=NULL)
@@ -75,7 +85,7 @@ void Mode_sequentiel()
     if(res_analyse==1) //Si le code ne comporte pas d'erreur on lance l'éxécution
     {
 		Sequentiel(code);
-		resultats=calloc(100000,sizeof(char)); //On alloue une taille de 100 char pour l affichage du resultat
+		resultats=calloc(100000,sizeof(char)); //On alloue de la memoire pour l affichage du resultat
 		sprintf(resultats,"Resultat du mode séquentiel : \n\n votre programme s'est éxécuté en %d cycles \n\n",cycle[0]); //On convertit le nb de cycle en type chaine pour pouvoir l'afficher.
 		
 		resultats=affiche_res_addr(resultats);
@@ -89,7 +99,8 @@ void Mode_sequentiel()
 	}
     free(code);
 }
-
+/* La fonction permet l'éxecution du mode pipeline ainsi que d'afficher les résultats.
+ */ 
 void Mode_pipeline()
 {	
 	if(addr!=NULL)
@@ -116,7 +127,7 @@ void Mode_pipeline()
     if(res_analyse==1) //Si le code ne comporte pas d'erreur on lance l'éxécution
     {
 		pipeline(code,0);
-		resultats=calloc(100000,sizeof(char)); //On alloue une taille de 100 char pour l affichage du resultat
+		resultats=calloc(100000,sizeof(char)); //On alloue de la memoire pour l affichage du resultat
 		sprintf(resultats,"Resultat du mode pipeline : \n\n votre programme s'est éxécuté en %d cycles \n\n",cycle[1]); //On convertit le nb de cycle en type chaine pour pouvoir l'afficher.
 		resultats=affiche_res_addr(resultats);
 		gtk_text_buffer_set_text(ResBuff,resultats,-1);
@@ -129,7 +140,8 @@ void Mode_pipeline()
 	}
     free(code);
 }
-
+/* La fonction permet l'éxecution du mode séquentiel et pipeline ainsi que d'afficher les résultats.
+ */ 
 void Comparaison()
 {
 	if(addr!=NULL)
@@ -159,7 +171,7 @@ void Comparaison()
 		Sequentiel(code);
 		pipeline(code,0);
 		float acc = (float)cycle[0]/(float)cycle[1];
-		resultats=calloc(100000,sizeof(char)); //On alloue une taille de 256 char pour l affichage du resultat
+		resultats=calloc(100000,sizeof(char)); //On alloue de la memoire pour l affichage du resultat
 		sprintf(resultats,"Resultat du mode séquentiel :\n\n votre programme s'est éxécuté en %d cycles \n\n Resultat du mode pipeline :\n\n votre programme s'est éxécuté en %d cycles\n\n Le rapport sequentiel/pipeline vaut : %f \n\n",cycle[0],cycle[1],acc); //On convertit le nb de cycle en type chaine pour pouvoir l'afficher.
 		resultats=affiche_res_addr(resultats);
 		gtk_text_buffer_set_text(ResBuff,resultats,-1);
